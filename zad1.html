@@ -25,7 +25,23 @@
 
                 i = (i + 1) % color.length;
             }
-            setInterval(change, 1000);
+            
+            var j = 0;
+            var my_gradient = ctx.createLinearGradient(j + 150, j + 150, j + 160, j + 160);
+            function changeGradient(color1, color2) {
+                var canv = document.getElementById("myCanvas");
+                var ctx = canv.getContext("2d");
+
+                my_gradient = ctx.createLinearGradient(j + 150, j + 150, j + 160, j + 160);
+                my_gradient.addColorStop(0, color1);
+                my_gradient.addColorStop(1, color2);
+                ctx.fillStyle = my_gradient;
+                ctx.fill();
+                
+                j = (j + 50) % 200;
+            }
+            /* setInterval(change, 1000) */
+            setInterval(changeGradient("red", "blue"), 50);
         </script>
     </canvas>
 </html>
