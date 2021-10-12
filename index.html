@@ -17,7 +17,7 @@
                 var canv = document.getElementById("myCanvas");
                 var ctx = canv.getContext("2d");
 
-                var my_gradient = ctx.createLinearGradient(50, 0, 200, 0);
+                var my_gradient = ctx.createLinearGradient(50, 0, 250, 0);
                 my_gradient.addColorStop(0, color[i]);
                 my_gradient.addColorStop(1, color[(i + 1) % color.length]);
                 ctx.fillStyle = my_gradient;
@@ -27,12 +27,12 @@
             }
             
             var j = 0;
-            var my_gradient = ctx.createLinearGradient(0, 0, 300, 0);
+            var my_gradient = ctx.createLinearGradient(50, 0, 250, 0);
             function changeGradient(color1, color2) {
                 var canv = document.getElementById("myCanvas");
                 var ctx = canv.getContext("2d");
 
-                my_gradient = ctx.createLinearGradient(j * 3, 0, 300, 0);
+                my_gradient = ctx.createLinearGradient(50 + j * 2, 0, 250, 0);
                 my_gradient.addColorStop(0, color1);
                 my_gradient.addColorStop(j/100.0, color2);
                 ctx.fillStyle = my_gradient;
@@ -41,7 +41,7 @@
                 j = (j + 1) % 100;
             }
             /*setInterval(change, 1000);*/
-            setInterval(function() { changeGradient("green", "blue")}, 100);
+            setInterval(function() { changeGradient("green", "blue")}, 10);
         </script>
     </canvas>
 </html>
