@@ -39,7 +39,9 @@
 				
 				if(acceptableMoves.includes(key.code)) {
 					move(key.code);
-				} else if(key.move === "Space") {}
+				} else if(key.code === "Space") {
+					shoot();
+				}
 			}
 			
 			function move(direction) {
@@ -56,6 +58,35 @@
 					ctx.stroke();
 					ctx.fillStyle = 'blue';
 					ctx.fill();
+				}
+			}
+			
+			function shoot() {
+				var canv = document.getElementById("game");
+				var ctx = canv.getContext("2d");
+				
+				ctx.beginPath();
+				ctx.arc(player.x + 20, player.y - 10, 5, 0, 2 * Math.PI);
+				ctx.stroke();
+				
+				setTimeout(function f() { bulletFly(player.x + 20, player.y - 10); }, 100 );
+			}
+			
+			function bulletFly(x, y) {
+				if(y > 10) {
+					var canv = document.getElementById("game");
+					var ctx = canv.getContext("2d");
+					ctx.clearRect(x - 6, y - 6, 12, 12);
+					
+					ctx.beginPath();
+					ctx.arc(x, y - 10, 5, 0, 2 * Math.PI);
+					ctx.stroke();
+					
+					setTimeout(function f() { bulletFly(x, y - 10); }, 100 );
+				} else if(y >= 10) {
+					var canv = document.getElementById("game");
+					var ctx = canv.getContext("2d");
+					ctx.clearRect(x - 6, y - 6, 12, 12);
 				}
 			}
 			
