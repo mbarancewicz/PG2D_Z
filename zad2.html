@@ -18,7 +18,8 @@
 					var ctx = canv.getContext("2d");
 
 					ctx.beginPath();
-					ctx.arc(getRandomCord(50, 750), getRandomCord(50, 300), 50, 0, 2 * Math.PI);
+					var ballRadius = getRandom(30, 75);
+					ctx.arc(getRandom(ballRadius, 800 - ballRadius), getRandom(ballRadius, 400 - ballRadius), ballRadius, 0, 2 * Math.PI);
 					ctx.stroke();
 					
 					spawned += 1;
@@ -26,7 +27,17 @@
 				
             }
 			
-			function getRandomCord(min, max) {
+			document.addEventListener('keydown', getKey);
+			
+			function getKey(key) {
+				var acceptable = ["ArrowLeft", "ArrowRight", "Space"]
+				
+				if(acceptable.includes(key.code)) {
+					console.log(`right ${key.code}`);
+				}
+			}
+			
+			function getRandom(min, max) {
 				return Math.random() * (max - min) + min;
 			}
             setInterval(spawnCircle, 1000);
