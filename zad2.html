@@ -18,13 +18,17 @@
 					var ctx = canv.getContext("2d");
 
 					ctx.beginPath();
-					ctx.arc(150 + spawned * 100, 150, 50, 0, 2 * Math.PI);
+					ctx.arc(getRandomCord(50, 750), getRandomCord(50, 300), 50, 0, 2 * Math.PI);
 					ctx.stroke();
 					
 					spawned += 1;
 				}
 				
             }
+			
+			function getRandomCord(min, max) {
+				return Math.random() * (max - min) + min;
+			}
             setInterval(spawnCircle, 1000);
 		</script>
 	</canvas>
