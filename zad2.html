@@ -3,8 +3,13 @@
 		<script>
 			var c = document.getElementById("game");
             var ctx = c.getContext("2d");
+			var player = {
+				x: 380,
+				y: 580
+			};
+			
             ctx.beginPath();
-            ctx.rect(380, 580, 40, 20);
+            ctx.rect(player.x, player.y, 40, 20);
 			ctx.stroke();
 			
 			ctx.fillStyle = 'blue';
@@ -38,15 +43,19 @@
 			}
 			
 			function moveLeft() {
-				var canv = document.getElementById("game");
-				var ctx = canv.getContext("2d");
-				ctx.clearRect(379, 579, 42, 21);
-				
-				ctx.beginPath();
-				ctx.rect(260, 580, 40, 20);
-				ctx.stroke();
-				ctx.fillStyle = 'blue';
-				ctx.fill();
+				if(player.x > 0) {
+					var canv = document.getElementById("game");
+					var ctx = canv.getContext("2d");
+					ctx.clearRect(player.x - 1, player.y - 1, 42, 21);
+					
+					player.x = player.x - 10;
+					
+					ctx.beginPath();
+					ctx.rect(player.x, player.y, 40, 20);
+					ctx.stroke();
+					ctx.fillStyle = 'blue';
+					ctx.fill();
+				}
 			}
 			
 			function getRandom(min, max) {
