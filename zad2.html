@@ -10,16 +10,22 @@
 			ctx.fillStyle = 'blue';
             ctx.fill();
 			
+			var spawned = 0;
+			var score = 0;
 			function spawnCircle() {
-                var canv = document.getElementById("game");
-                var ctx = canv.getContext("2d");
+                if((spawned - score) <= 5) {  
+					var canv = document.getElementById("game");
+					var ctx = canv.getContext("2d");
 
-				ctx.beginPath();
-				ctx.arc(150, 150, 50, 0, 2 * Math.PI);
-				ctx.stroke();
+					ctx.beginPath();
+					ctx.arc(150 + spawned * 100, 150, 50, 0, 2 * Math.PI);
+					ctx.stroke();
+					
+					spawned += 1;
+				}
+				
             }
-            /*setInterval(spawnCircle, 1000);*/
-			spawnCircle();
+            setInterval(spawnCircle, 1000);
 		</script>
 	</canvas>
 </html>
