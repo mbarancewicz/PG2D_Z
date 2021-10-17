@@ -109,8 +109,8 @@
 
 			function findCollision(position) {
 				for(const target of targets) {
-					if((position.y >= target.y + target.r && position.y <= target.y - target.r) &&
-						(position.x <= target.x + r && position.x >= target.x - r )) return target;
+					if((position.y >= target.y - target.r && position.y <= target.y + target.r) &&
+						(position.x <= target.x + target.r && position.x >= target.x - target.r )) return target;
 				}
 				return null;
 			}
