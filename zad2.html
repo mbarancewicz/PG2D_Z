@@ -2,7 +2,7 @@
 	<canvas id="game" width="800" height="600">
 		<script>
 			/* todo: 
-				- improve clearing
+				- improve clearing of bullets
 				- impl destroying balls*/
 			var c = document.getElementById("game");
             var ctx = c.getContext("2d");
@@ -94,7 +94,9 @@
 						
 						setTimeout(function f() { bulletFly(x, y - 10); }, 100 );
 					} else {
-						console.log(`collision ${collision}`)
+						/* it only removes from targets array, it also need to clear arc */
+						targets = targets.filter( function(t) { return t != collision; } );
+						console.log(targets)
 					}
 				} else if(y >= 10) {
 					var canv = document.getElementById("game");
@@ -109,8 +111,12 @@
 
 			function findCollision(position) {
 				for(const target of targets) {
+					/* it is checking with the center of the bullet*/
 					if((position.y >= target.y - target.r && position.y <= target.y + target.r) &&
-						(position.x <= target.x + target.r && position.x >= target.x - target.r )) return target;
+						(position.x <= target.x + target.r && position.x >= target.x - target.r )) {
+							var distance = Math.sqrt(Math.pow(target.x - position.x, 2) + Math.pow(target.y - position.y, 2));
+							if(distance <= target.r) return target;
+						}
 				}
 				return null;
 			}
