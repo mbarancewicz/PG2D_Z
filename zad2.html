@@ -35,20 +35,21 @@
 			document.addEventListener('keydown', getKey);
 			
 			function getKey(key) {
-				var acceptable = ["ArrowLeft", "ArrowRight", "Space"]
+				var acceptableMoves = ["ArrowLeft", "ArrowRight"]
 				
-				if(key.code == "ArrowLeft") {
-					moveLeft();
-				}
+				if(acceptableMoves.includes(key.code)) {
+					move(key.code);
+				} else if(key.move === "Space") {}
 			}
 			
-			function moveLeft() {
-				if(player.x > 0) {
+			function move(direction) {
+				var reverse = direction === "ArrowLeft" ? -1 : 1;
+				if((reverse < 0 && player.x > 0) || (reverse > 0 && player.x < 760)) {
 					var canv = document.getElementById("game");
 					var ctx = canv.getContext("2d");
 					ctx.clearRect(player.x - 1, player.y - 1, 42, 21);
 					
-					player.x = player.x - 10;
+					player.x = player.x + 10 * reverse;
 					
 					ctx.beginPath();
 					ctx.rect(player.x, player.y, 40, 20);
