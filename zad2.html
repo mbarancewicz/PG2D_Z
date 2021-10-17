@@ -10,6 +10,7 @@
 				x: 380,
 				y: 580
 			};
+			var targets = []
 			
             ctx.beginPath();
             ctx.rect(player.x, player.y, 40, 20);
@@ -26,13 +27,15 @@
 					var ctx = canv.getContext("2d");
 
 					ctx.beginPath();
-					var ballRadius = getRandom(30, 75);
-					ctx.arc(getRandom(ballRadius, 800 - ballRadius), getRandom(ballRadius, 400 - ballRadius), ballRadius, 0, 2 * Math.PI);
+					var r = getRandom(30, 75);
+					var x = getRandom(r, 800 - r);
+					var y = getRandom(r, 400 - r);
+					ctx.arc(x, y, r, 0, 2 * Math.PI);
 					ctx.stroke();
 					
+					targets.push({x: x, y: y, r: r});
 					spawned += 1;
-				}
-				
+				}	
             }
 			
 			document.addEventListener('keydown', getKey);
@@ -79,13 +82,20 @@
 				if(y > 10) {
 					var canv = document.getElementById("game");
 					var ctx = canv.getContext("2d");
+					
 					ctx.clearRect(x - 6, y - 6, 12, 12);
 					
-					ctx.beginPath();
-					ctx.arc(x, y - 10, 5, 0, 2 * Math.PI);
-					ctx.stroke();
-					
-					setTimeout(function f() { bulletFly(x, y - 10); }, 100 );
+					var collision = findCollision({x: x, y: y})
+
+					if(collision === null) {
+						ctx.beginPath();
+						ctx.arc(x, y - 10, 5, 0, 2 * Math.PI);
+						ctx.stroke();
+						
+						setTimeout(function f() { bulletFly(x, y - 10); }, 100 );
+					} else {
+						console.log(`collision ${collision}`)
+					}
 				} else if(y >= 10) {
 					var canv = document.getElementById("game");
 					var ctx = canv.getContext("2d");
@@ -95,6 +105,14 @@
 			
 			function getRandom(min, max) {
 				return Math.random() * (max - min) + min;
+			}
+
+			function findCollision(position) {
+				for(const target of targets) {
+					if((position.y >= target.y + target.r && position.y <= target.y - target.r) &&
+						(position.x <= target.x + r && position.x >= target.x - r )) return target;
+				}
+				return null;
 			}
             setInterval(spawnCircle, 1000);
 		</script>
