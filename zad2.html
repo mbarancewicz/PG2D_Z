@@ -112,13 +112,21 @@
 			function findCollision(position) {
 				for(const target of targets) {
 					/* it is checking with the center of the bullet*/
-					if((position.y >= target.y - target.r && position.y <= target.y + target.r) &&
-						(position.x <= target.x + target.r && position.x >= target.x - target.r )) {
-							var distance = Math.sqrt(Math.pow(target.x - position.x, 2) + Math.pow(target.y - position.y, 2));
+					if(withinSquareBuildOnCircle(position, target)) {
+							var distance = distanceFromMiddleOfCircle(position, target);
 							if(distance <= target.r) return target;
 						}
 				}
 				return null;
+			}
+
+			function withinSquareBuildOnCircle(position, circle) {
+				return position.y >= circle.y - circle.r && position.y <= circle.y + circle.r &&
+						position.x <= circle.x + circle.r && position.x >= circle.x - circle.r;
+			}
+
+			function distanceFromMiddleOfCircle(position, circle) {
+				return Math.sqrt(Math.pow(circle.x - position.x, 2) + Math.pow(circle.y - position.y, 2));
 			}
             setInterval(spawnCircle, 1000);
 		</script>
