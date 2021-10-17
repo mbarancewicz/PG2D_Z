@@ -1,7 +1,25 @@
 <html>
 	<canvas id="game" width="800" height="600">
 		<script>
+			var c = document.getElementById("game");
+            var ctx = c.getContext("2d");
+            ctx.beginPath();
+            ctx.rect(380, 580, 40, 20);
+			ctx.stroke();
 			
+			ctx.fillStyle = 'blue';
+            ctx.fill();
+			
+			function spawnCircle() {
+                var canv = document.getElementById("game");
+                var ctx = canv.getContext("2d");
+
+				ctx.beginPath();
+				ctx.arc(150, 150, 50, 0, 2 * Math.PI);
+				ctx.stroke();
+            }
+            /*setInterval(spawnCircle, 1000);*/
+			spawnCircle();
 		</script>
 	</canvas>
 </html>
