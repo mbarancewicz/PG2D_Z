@@ -13,13 +13,7 @@
 			var targets = []
 			var bullets = []
 			
-            ctx.beginPath();
-            ctx.rect(player.x, player.y, 40, 20);
-			ctx.stroke();
-			
-			ctx.fillStyle = 'blue';
-            ctx.fill();
-			
+            
 			var spawned = 0;
 			var score = 0;
 			function spawnCircle() {
@@ -52,8 +46,12 @@
 			}
 			
 			function gameLoop() {
-				setInterval(renderBullets, 100);
 				setInterval(updateBulletsPosition, 100);
+				setInterval(detectCollisions, 100);
+				setInterval(clearAll, 100);	
+				setInterval(renderBullets, 100);
+				setInterval(renderCircles, 100);
+				setInterval(rederPlayer, 100);	
 			}
 
 			function move(direction) {
@@ -88,12 +86,37 @@
 				}
 			}
 
+			function renderCircles() {
+				for(const circle of targets) {
+					rederCircle(circle);
+				}
+			}
+
+			function rederCircle(circle) {
+				var canv = document.getElementById("game");
+				var ctx = canv.getContext("2d");
+
+				ctx.beginPath();
+				ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
+				ctx.stroke();
+			}
+
+			function rederPlayer() {
+				var canv = document.getElementById("game");
+				var ctx = canv.getContext("2d");
+
+				ctx.beginPath();
+				ctx.rect(player.x, player.y, 40, 20);
+				ctx.stroke();
+				
+				ctx.fillStyle = 'blue';
+				ctx.fill();
+			}
+
 			function updateBulletsPosition() {
-				console.log(bullets);
 				bullets = bullets.map(function(bullet) {
   					return {x: bullet.x, y: bullet.y - 10};
 				});
-				console.log(bullets);
 				bullets = bullets.filter( function(b) { return b.y > 10; } );
 				
 			}
@@ -102,33 +125,24 @@
 				bullets.push({x: player.x + 20, y: player.y - 10 });
 			}
 
-			
-			// function bulletFly(x, y) {
-			// 	if(y > 10) {
-			// 		var canv = document.getElementById("game");
-			// 		var ctx = canv.getContext("2d");
-					
-			// 		ctx.clearRect(x - 6, y - 6, 12, 12);
-					
-			// 		var collision = findCollision({x: x, y: y})
+			function detectCollision(bullet) {
+				targets = targets.filter(function(t) {
+					return distanceFromMiddleOfCircle(bullet, t) > t.r + 2.5;
+				});
+			}
 
-			// 		if(collision === null) {
-			// 			ctx.beginPath();
-			// 			ctx.arc(x, y - 10, 5, 0, 2 * Math.PI);
-			// 			ctx.stroke();
-						
-			// 			setTimeout(function f() { bulletFly(x, y - 10); }, 100 );
-			// 		} else {
-			// 			/* it only removes from targets array, it also need to clear arc */
-			// 			targets = targets.filter( function(t) { return t != collision; } );
-			// 			console.log(targets)
-			// 		}
-			// 	} else if(y >= 10) {
-			// 		var canv = document.getElementById("game");
-			// 		var ctx = canv.getContext("2d");
-			// 		ctx.clearRect(x - 6, y - 6, 12, 12);
-			// 	}
-			// }
+			function detectCollisions() {
+				for(const bullet of bullets) {
+					detectCollision(bullet);
+				}
+				console.log(targets);
+			}
+
+			function clearAll() {
+				var canv = document.getElementById("game");
+				var ctx = canv.getContext("2d");
+				ctx.clearRect(0, 0, 800, 600);
+			}
 			
 			function getRandom(min, max) {
 				return Math.random() * (max - min) + min;
