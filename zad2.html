@@ -11,6 +11,7 @@
 				y: 580
 			};
 			var targets = []
+			var bullets = []
 			
             ctx.beginPath();
             ctx.rect(player.x, player.y, 40, 20);
@@ -46,10 +47,15 @@
 				if(acceptableMoves.includes(key.code)) {
 					move(key.code);
 				} else if(key.code === "Space") {
-					shoot();
+					shootBulet(player);
 				}
 			}
 			
+			function gameLoop() {
+				setInterval(renderBullets, 100);
+				setInterval(updateBulletsPosition, 100);
+			}
+
 			function move(direction) {
 				var reverse = direction === "ArrowLeft" ? -1 : 1;
 				if((reverse < 0 && player.x > 0) || (reverse > 0 && player.x < 760)) {
@@ -67,43 +73,62 @@
 				}
 			}
 			
-			function shoot() {
+			function renderBullet(bullet) {
 				var canv = document.getElementById("game");
 				var ctx = canv.getContext("2d");
 				
 				ctx.beginPath();
-				ctx.arc(player.x + 20, player.y - 10, 5, 0, 2 * Math.PI);
+				ctx.arc(bullet.x, bullet.y, 5, 0, 2 * Math.PI);
 				ctx.stroke();
-				
-				setTimeout(function f() { bulletFly(player.x + 20, player.y - 10); }, 100 );
 			}
-			
-			function bulletFly(x, y) {
-				if(y > 10) {
-					var canv = document.getElementById("game");
-					var ctx = canv.getContext("2d");
-					
-					ctx.clearRect(x - 6, y - 6, 12, 12);
-					
-					var collision = findCollision({x: x, y: y})
 
-					if(collision === null) {
-						ctx.beginPath();
-						ctx.arc(x, y - 10, 5, 0, 2 * Math.PI);
-						ctx.stroke();
-						
-						setTimeout(function f() { bulletFly(x, y - 10); }, 100 );
-					} else {
-						/* it only removes from targets array, it also need to clear arc */
-						targets = targets.filter( function(t) { return t != collision; } );
-						console.log(targets)
-					}
-				} else if(y >= 10) {
-					var canv = document.getElementById("game");
-					var ctx = canv.getContext("2d");
-					ctx.clearRect(x - 6, y - 6, 12, 12);
+			function renderBullets() {
+				for(const bullet of bullets) {
+					renderBullet(bullet);
 				}
 			}
+
+			function updateBulletsPosition() {
+				console.log(bullets);
+				bullets = bullets.map(function(bullet) {
+  					return {x: bullet.x, y: bullet.y - 10};
+				});
+				console.log(bullets);
+				bullets = bullets.filter( function(b) { return b.y > 10; } );
+				
+			}
+
+			function shootBulet(player) {
+				bullets.push({x: player.x + 20, y: player.y - 10 });
+			}
+
+			
+			// function bulletFly(x, y) {
+			// 	if(y > 10) {
+			// 		var canv = document.getElementById("game");
+			// 		var ctx = canv.getContext("2d");
+					
+			// 		ctx.clearRect(x - 6, y - 6, 12, 12);
+					
+			// 		var collision = findCollision({x: x, y: y})
+
+			// 		if(collision === null) {
+			// 			ctx.beginPath();
+			// 			ctx.arc(x, y - 10, 5, 0, 2 * Math.PI);
+			// 			ctx.stroke();
+						
+			// 			setTimeout(function f() { bulletFly(x, y - 10); }, 100 );
+			// 		} else {
+			// 			/* it only removes from targets array, it also need to clear arc */
+			// 			targets = targets.filter( function(t) { return t != collision; } );
+			// 			console.log(targets)
+			// 		}
+			// 	} else if(y >= 10) {
+			// 		var canv = document.getElementById("game");
+			// 		var ctx = canv.getContext("2d");
+			// 		ctx.clearRect(x - 6, y - 6, 12, 12);
+			// 	}
+			// }
 			
 			function getRandom(min, max) {
 				return Math.random() * (max - min) + min;
@@ -125,10 +150,11 @@
 						position.x <= circle.x + circle.r && position.x >= circle.x - circle.r;
 			}
 
-			function distanceFromMiddleOfCircle(position, circle) {
-				return Math.sqrt(Math.pow(circle.x - position.x, 2) + Math.pow(circle.y - position.y, 2));
+			function distanceFromMiddleOfCircle(bullet, circle) {
+				return Math.sqrt(Math.pow(circle.x - bullet.x, 2) + Math.pow(circle.y - bullet.y, 2));
 			}
             setInterval(spawnCircle, 1000);
+			gameLoop();
 		</script>
 	</canvas>
 </html>
