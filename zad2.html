@@ -1,11 +1,6 @@
 <html>
 	<canvas id="game" width="800" height="600">
 		<script>
-			/* todo: 
-				- improve clearing of bullets
-				- impl destroying balls*/
-			var c = document.getElementById("game");
-            var ctx = c.getContext("2d");
 			var player = {
 				x: 380,
 				y: 580
@@ -13,27 +8,20 @@
 			var targets = []
 			var bullets = []
 			
-            
 			var spawned = 0;
 			var score = 0;
-			function spawnCircle() {
-                if((spawned - score) <= 5) {  
-					var canv = document.getElementById("game");
-					var ctx = canv.getContext("2d");
 
-					ctx.beginPath();
-					var r = getRandom(30, 75);
-					var x = getRandom(r, 800 - r);
-					var y = getRandom(r, 400 - r);
-					ctx.arc(x, y, r, 0, 2 * Math.PI);
-					ctx.stroke();
-					
-					targets.push({x: x, y: y, r: r});
-					spawned += 1;
-				}	
-            }
-			
+			gameLoop();
 			document.addEventListener('keydown', getKey);
+
+			function spawnCircle() {
+				var r = getRandom(30, 75);
+				var x = getRandom(r, 800 - r);
+				var y = getRandom(r, 400 - r);
+				
+				targets.push({x: x, y: y, r: r});
+				spawned += 1;		
+            }
 			
 			function getKey(key) {
 				var acceptableMoves = ["ArrowLeft", "ArrowRight"]
@@ -46,12 +34,14 @@
 			}
 			
 			function gameLoop() {
-				setInterval(updateBulletsPosition, 100);
-				setInterval(detectCollisions, 100);
-				setInterval(clearAll, 100);	
-				setInterval(renderBullets, 100);
-				setInterval(renderCircles, 100);
-				setInterval(rederPlayer, 100);	
+				setInterval(updateBulletsPosition, 60);
+				setInterval(detectCollisions, 60);
+				setInterval(clearAll, 60);	
+				setInterval(renderBullets, 60);
+				setInterval(renderCircles, 60);
+				setInterval(rederPlayer, 60);	
+				setInterval(rederPlayer, 60);
+				setInterval(spawnCircle, 1000);
 			}
 
 			function move(direction) {
@@ -148,27 +138,9 @@
 				return Math.random() * (max - min) + min;
 			}
 
-			function findCollision(position) {
-				for(const target of targets) {
-					/* it is checking with the center of the bullet*/
-					if(withinSquareBuildOnCircle(position, target)) {
-							var distance = distanceFromMiddleOfCircle(position, target);
-							if(distance <= target.r) return target;
-						}
-				}
-				return null;
-			}
-
-			function withinSquareBuildOnCircle(position, circle) {
-				return position.y >= circle.y - circle.r && position.y <= circle.y + circle.r &&
-						position.x <= circle.x + circle.r && position.x >= circle.x - circle.r;
-			}
-
 			function distanceFromMiddleOfCircle(bullet, circle) {
 				return Math.sqrt(Math.pow(circle.x - bullet.x, 2) + Math.pow(circle.y - bullet.y, 2));
 			}
-            setInterval(spawnCircle, 1000);
-			gameLoop();
 		</script>
 	</canvas>
 </html>
