@@ -1,0 +1,65 @@
+<html>
+    <canvas id="game" width="800" height="600">
+        <script>
+            var canv = document.getElementById("game");
+            var ctx = canv.getContext("2d");
+            
+            ctx.beginPath();
+            ctx.rect(0, 0, 800, 600);
+            ctx.fillStyle = '#1e7813';
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.rect(200, 0, 400, 600);
+            ctx.fillStyle = '#353837';
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.rect(180, 0, 20, 600);
+            ctx.rect(600, 0, 20, 600);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.stroke();
+
+
+            var y = 0;
+            function renderSide() {
+                for(i = 0; i <= 29; i++) {
+                    ctx.beginPath();
+                    ctx.rect(180, i * 20 + y, 20, 20);
+                    ctx.rect(600, i * 20 + y, 20, 20);
+                    if(i % 2 == 0) ctx.fillStyle = '#de1818';
+                    else ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.rect(180, 0, 20, y);
+                    ctx.rect(600, 0, 20, y);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.stroke();
+
+                    if(y >= 20) {
+                        ctx.beginPath();
+                        ctx.rect(180, 0, 20, y - 20);
+                        ctx.rect(600, 0, 20, y - 20);
+                        ctx.fillStyle = '#de1818';
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+
+                }
+            }
+
+            function incY() {
+                y = (y + 1) % 40;
+            }
+
+            setInterval(renderSide, 50);
+            setInterval(incY, 50);
+        </script>
+    </canvas>
+</html>
