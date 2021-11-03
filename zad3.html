@@ -66,6 +66,7 @@
                 moveObstacles();
                 renderObstacles();
                 renderPlayer();
+                detectCollisions();
             }
 
             function renderStripes() {    
@@ -271,6 +272,14 @@
 
             function incY() {
                 y = (y + 5) % 60;
+            }
+
+            function detectCollisions() {
+                var obstacleCollisions = obstacles.filter( function(o) { 
+                    if(player.x >= o.x) return player.x >= o.x && player.x <= o.x + 80 && player.y <= o.y + 25 && player.y >= o.y;
+                    else return o.x >= player.x && o.x <= player.x + 53 && player.y <= o.y + 25 && player.y >= o.y;
+                } ).length;
+                console.log(obstacleCollisions);
             }
 
             document.addEventListener('keydown', getKey);
