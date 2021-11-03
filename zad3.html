@@ -25,7 +25,7 @@
 
 
             var y = 0;
-            function renderSideAndStripes() {
+            function renderSides() {
                 for(i = 0; i <= 19; i++) {
                     ctx.beginPath();
                     ctx.rect(180, i * 30 + y, 20, 30);
@@ -50,20 +50,35 @@
                         ctx.fill();
                         ctx.stroke();
                     }
+                }
 
+
+                ctx.beginPath();
+                    ctx.rect(200, 0, 400, 600);
+                    ctx.fillStyle = '#353837';
+                    ctx.fill();
+                    ctx.stroke();
+
+                for(i = 0; i <= 4; i++) {
                     ctx.beginPath();
-                    ctx.rect(395, i * 100, 10, 50);
+                    ctx.rect(395, i * 120 + y * 2, 10, 60);
                     ctx.fillStyle = '#ffffff';
                     ctx.fill();
                     ctx.stroke();
-                }
+                }  
+                
+            }
+
+            function renderStripes() {        
+                
             }
 
             function incY() {
                 y = (y + 5) % 60;
             }
 
-            setInterval(renderSideAndStripes, 50);
+            renderStripes();
+            setInterval(renderSides, 50);
             setInterval(incY, 50);
         </script>
     </canvas>
