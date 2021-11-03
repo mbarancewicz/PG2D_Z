@@ -5,7 +5,8 @@
 				x: 425,
 				y: 500
 			};
-            var obstacles = []
+            var obstacles = [];
+            var bonuses = [];
 
             var canv = document.getElementById("game");
             var ctx = canv.getContext("2d");
@@ -60,9 +61,10 @@
 
                 
                 renderStripes();
+                moveBonuses();
+                renderBonuses();
                 moveObstacles();
                 renderObstacles();
-                renderBonus(500, 250);
                 renderPlayer();
             }
 
@@ -246,6 +248,23 @@
                 }
             }
 
+            function renderBonuses() {
+                for(const bonus of bonuses) {
+                    renderBonus(bonus.x, bonus.y);
+                }
+            }
+
+            function spawnBonus() {
+                var random = getRandom(220, 580);
+                var bonus =  {x: random, y: 0};
+                
+                bonuses.push(bonus);
+            }
+
+            function moveBonuses() {
+                bonuses = bonuses.map( function(b) { return { x: b.x, y: b.y + 5} } );
+            }
+
             function getRandom(min, max) {
 				return Math.random() * (max - min) + min;
 			}
@@ -259,6 +278,7 @@
             setInterval(incY, 50);
 
             setInterval(spawnObstacle, 1500);
+            setInterval(spawnBonus, 2000);
         </script>
     </canvas>
 </html>
