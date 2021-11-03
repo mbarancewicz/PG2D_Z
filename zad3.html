@@ -60,7 +60,9 @@
 
                 
                 renderStripes();
+                moveObstacles();
                 renderObstacles();
+                renderBonus(500, 250);
                 renderPlayer();
             }
 
@@ -215,9 +217,33 @@
                 }
             }
 
+            function moveObstacles() {
+                obstacles = obstacles.map( function(o) { return { x: o.x, y: o.y + 5} } );
+            }
+
             function spawnObstacle() {
-                var obstacle = {x: getRandom(200, 450), y: 0};
+                var random = getRandom(200, 450);
+                var obstacle =  {x: random, y: 0};
+                
                 obstacles.push(obstacle);
+            }
+
+            function renderBonus(bonusX, bonusY) {
+                ctx.beginPath();
+                ctx.arc(bonusX, bonusY, 20, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fillStyle = '#dec468';
+                ctx.fill(); 
+
+                var cookiesParts = [{x: bonusX, y: bonusY - 10}, {x: bonusX, y: bonusY + 10}, {x: bonusX - 10, y: bonusY}, {x: bonusX + 10, y: bonusY}];
+
+                for(i = 0; i < cookiesParts.length; i++) {
+                    ctx.beginPath();
+                    ctx.arc(cookiesParts[i].x, cookiesParts[i].y, 2, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fillStyle = '#261602';
+                    ctx.fill(); 
+                }
             }
 
             function getRandom(min, max) {
@@ -232,7 +258,7 @@
             setInterval(renderSidesAndStripes, 50);
             setInterval(incY, 50);
 
-            spawnObstacle();
+            setInterval(spawnObstacle, 1500);
         </script>
     </canvas>
 </html>
