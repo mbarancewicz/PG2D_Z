@@ -7,6 +7,7 @@
 			};
             var obstacles = [];
             var bonuses = [];
+            var score = 0;
 
             var canv = document.getElementById("game");
             var ctx = canv.getContext("2d");
@@ -59,7 +60,6 @@
                     }
                 }
 
-                
                 renderStripes();
                 moveBonuses();
                 renderBonuses();
@@ -276,10 +276,20 @@
 
             function detectCollisions() {
                 var obstacleCollisions = obstacles.filter( function(o) { 
-                    if(player.x >= o.x) return player.x >= o.x && player.x <= o.x + 80 && player.y <= o.y + 25 && player.y >= o.y;
+                    if(player.x >= o.x) return player.x >= o.x && player.x <= o.x + 78 && player.y <= o.y + 25 && player.y >= o.y;
                     else return o.x >= player.x && o.x <= player.x + 53 && player.y <= o.y + 25 && player.y >= o.y;
                 } ).length > 0;
                 if(obstacleCollisions) lost();
+
+                var bonusCollisions = bonuses.filter( function(b) { 
+                    if(player.x >= b.x) return player.x >= b.x - 20 && player.x <= b.x + 20 && player.y <= b.y + 20 && player.y >= b.y - 20;
+                    else return player.x + 53 >= b.x - 20 && player.x <= b.x + 20 && player.y <= b.y + 20 && player.y >= b.y - 20;
+                } );
+
+                if(bonusCollisions.length > 0) {
+                    bonuses = bonuses.filter(function(b) { for(const bc of bonusCollisions) { return b != bc; }} );
+                    score++;
+                }
             }
 
             function lost() {
@@ -298,11 +308,27 @@
                 ctx.font = "40pt Calibri";
                 ctx.fillText("GAME OVER!", 260, 300);
             }
+
+            function renderScore() {
+                ctx.beginPath();
+                ctx.rect(650, 50, 150, 50);
+                ctx.stroke();
+                ctx.fillStyle = '#1e7813';
+                ctx.fill(); 
+
+                ctx.beginPath();
+                ctx.fillStyle = '#ffffff';
+                ctx.font = "20pt Calibri";
+                ctx.fillText("SCORE: " + score, 650, 75);
+                ctx.stroke();
+            }
+
             document.addEventListener('keydown', getKey);
             var rederInterval = setInterval(renderSidesAndStripes, 50);
             setInterval(incY, 50);
 
-            var spawnObstaclesInteval = setInterval(spawnObstacle, 1500);
+            setInterval(renderScore, 50);
+            var spawnObstaclesInteval = setInterval(spawnObstacle, 2000);
             var spawnBonusesInterval = setInterval(spawnBonus, 2000);
         </script>
     </canvas>
