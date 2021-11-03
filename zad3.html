@@ -114,7 +114,7 @@
 				ctx.beginPath();
 				ctx.rect(player.x, player.y, 50, 80);
 				ctx.stroke();
-				ctx.fillStyle = '#ebe349';
+				ctx.fillStyle = '#ffbf00';
 				ctx.fill();
 
                 var tires = [
@@ -128,15 +128,28 @@
                     ctx.beginPath();
                     ctx.rect(tires[i].x, tires[i].y, 3, 15);
                     ctx.stroke();
-                    ctx.fillStyle = '#363636';
+                    ctx.fillStyle = '#000000';
                     ctx.fill();
                 }    
+
+
+                ctx.beginPath();
+                ctx.rect(player.x + 23, player.y, 1, 80);
+                ctx.stroke();
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.rect(player.x + 26, player.y, 1, 80);
+                ctx.stroke();
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
 
                 ctx.beginPath();
                 ctx.rect(player.x + 5, player.y + 20, 40, 15);
                 ctx.stroke();
-                ctx.fillStyle = '#a6abff';
-                ctx.fill();
+                ctx.fillStyle = '#2977ff';
+                ctx.fill();          
 			}
 
             function getKey(key) {
