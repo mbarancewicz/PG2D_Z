@@ -278,16 +278,32 @@
                 var obstacleCollisions = obstacles.filter( function(o) { 
                     if(player.x >= o.x) return player.x >= o.x && player.x <= o.x + 80 && player.y <= o.y + 25 && player.y >= o.y;
                     else return o.x >= player.x && o.x <= player.x + 53 && player.y <= o.y + 25 && player.y >= o.y;
-                } ).length;
-                console.log(obstacleCollisions);
+                } ).length > 0;
+                if(obstacleCollisions) lost();
             }
 
+            function lost() {
+                clearInterval(rederInterval);
+                clearInterval(spawnObstaclesInteval);
+                clearInterval(spawnBonusesInterval);
+
+                ctx.beginPath();
+                ctx.rect(200, 0, 400, 600);
+                ctx.stroke();
+                ctx.fillStyle = '#000000';
+                ctx.fill(); 
+
+                ctx.beginPath();
+                ctx.fillStyle = '#ffffff';
+                ctx.font = "40pt Calibri";
+                ctx.fillText("GAME OVER!", 260, 300);
+            }
             document.addEventListener('keydown', getKey);
-            setInterval(renderSidesAndStripes, 50);
+            var rederInterval = setInterval(renderSidesAndStripes, 50);
             setInterval(incY, 50);
 
-            setInterval(spawnObstacle, 1500);
-            setInterval(spawnBonus, 2000);
+            var spawnObstaclesInteval = setInterval(spawnObstacle, 1500);
+            var spawnBonusesInterval = setInterval(spawnBonus, 2000);
         </script>
     </canvas>
 </html>
